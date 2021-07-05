@@ -1,0 +1,38 @@
+local userInputService = game:service('UserInputService')
+local ScriptOn = false
+local VIM = game:GetService("VirtualInputManager")
+local User = game:GetService("Players").LocalPlayer.Name
+userInputService.InputBegan:Connect(function(input, chat)
+    if chat then return end
+    if input.KeyCode == Enum.KeyCode.KeypadZero then
+        if ScriptOn == false then
+            ScriptOn = true
+            print("ScriptOn")
+        else
+            ScriptOn = false
+            print("ScriptOff")
+        end
+    end
+end)
+function Shadow()
+    if not game.workspace:FindFirstChild(User.."'s Shadow Image") and game:GetService("Players").LocalPlayer.PlayerGui.MainFrame["KI Handler"].Percent.Value == 100 then
+        VIM:SendKeyEvent(true,Enum.KeyCode.K,false,game)
+        wait(5)
+    end
+    repeat
+        local Char = game:service('Players').LocalPlayer.Character.HumanoidRootPart
+        local target = game:GetService("Workspace")[User.."'s Shadow Image"].HumanoidRootPart
+        Char.CFrame = target.CFrame + Vector3.new(0,0,2)
+        Char.CFrame = CFrame.new(Char.Position,target.Position)
+        Char.Parent:findFirstChildOfClass("Humanoid"):ChangeState(11)
+        VIM:SendKeyEvent(true,Enum.KeyCode.W,false,game)
+        local A_1 = "SecretCode"
+        game:GetService("Players").LocalPlayer.Character.Client.Events.LightAttack:FireServer("SecretCode")
+        game:GetService("Players").LocalPlayer.Character.Client.Events.Block:InvokeServer()
+    until not game.workspace:FindFirstChild(User.."'s Shadow Image") or ScriptOn == false or game:service('Players').LocalPlayer.Character.Humanoid.Health == 0
+end
+while wait() do
+    if ScriptOn == true then
+        pcall(Shadow)
+    end
+end
